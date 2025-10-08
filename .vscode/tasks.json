@@ -1,0 +1,85 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Streamlit App",
+      "type": "shell",
+      "command": "streamlit run app/streamlit_app.py",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Ingest Docs",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} scripts/ingest_docs.py --source data/raw --persist_dir data/index/chroma",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run API Server",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} -m uvicorn src.server:app --reload --port 8000",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Export Quick Cards PDF",
+      "type": "shell",
+      "command": "make cards-pdf",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} -m pytest -q",
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Build Image",
+      "type": "shell",
+      "command": "make docker-build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Run App",
+      "type": "shell",
+      "command": "make docker-run-app",
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Run API",
+      "type": "shell",
+      "command": "make docker-run-api",
+      "problemMatcher": []
+    },
+    {
+      "label": "Local AI: Check Ollama",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} scripts/local_ai_check.py --model llama3.2:3b-instruct --prompt \"Say 'Hello TCE'\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Session 2: Run Challenges (unittest)",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} -m unittest discover -s sessions/session02_dsa/content/challenges -p 'test_*.py' -v",
+      "problemMatcher": []
+    },
+    {
+      "label": "Session 3: Docker Build API",
+      "type": "shell",
+      "command": "docker build -f sessions/session03_cloud_devops/Dockerfile -t s3-api:latest .",
+      "problemMatcher": []
+    },
+    {
+      "label": "Session 3: Docker Run API",
+      "type": "shell",
+      "command": "docker run --rm -p 8000:8000 s3-api:latest",
+      "problemMatcher": []
+    },
+    {
+      "label": "Session 4: Run Challenges (unittest)",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} -m unittest discover -s sessions/session04_cybersecurity/content/challenges -p 'test_*.py' -v",
+      "problemMatcher": []
+    }
+  ]
+}
